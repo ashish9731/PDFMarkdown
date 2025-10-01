@@ -180,13 +180,18 @@ ${text}
         .replace(/\n{3,}/g, '\n\n') // Replace 3+ newlines with 2
         .trim()
       
-      // Create JSON structure for DOCX files
+      // Create JSON structure for DOCX files with proper formatting
       const jsonResult = {
         type: "docx",
         filename: file.name,
         content: result.value, // Original HTML content
         markdown: markdown,
-        messages: result.messages
+        messages: result.messages,
+        conversionInfo: {
+          convertedAt: new Date().toISOString(),
+          fileSize: file.size,
+          fileType: file.type || "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        }
       }
       
       return {
@@ -223,7 +228,12 @@ Please convert your document to PDF for the best Markdown conversion experience.
         filename: file.name,
         message: "DOCX support is limited. Convert to PDF for best results.",
         markdown: markdown,
-        error: error instanceof Error ? error.message : "Unknown error"
+        error: error instanceof Error ? error.message : "Unknown error",
+        conversionInfo: {
+          convertedAt: new Date().toISOString(),
+          fileSize: file.size,
+          fileType: file.type || "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        }
       }
       
       return {
@@ -255,7 +265,12 @@ Please convert your document to PDF for the best Markdown conversion experience.
             type: "pdf",
             filename: file.name,
             pages: "unknown", // pdf2md doesn't provide page count directly
-            markdown: markdown
+            markdown: markdown,
+            conversionInfo: {
+              convertedAt: new Date().toISOString(),
+              fileSize: file.size,
+              fileType: file.type || "application/pdf"
+            }
           }
           
           result = {

@@ -209,8 +209,8 @@ export default function Home() {
                         <TabsContent value="json" className="p-0">
                           <ScrollArea className="h-[400px] w-full rounded-md border">
                             <div className="p-4">
-                              <pre className="text-sm bg-muted p-4 rounded-md">
-                                <code className="whitespace-pre-wrap">
+                              <pre className="text-sm bg-muted p-4 rounded-md overflow-auto">
+                                <code>
                                   {formatJson(conversionResult.json)}
                                 </code>
                               </pre>
