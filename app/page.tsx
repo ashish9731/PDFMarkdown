@@ -9,35 +9,14 @@ import { FileText, Code, ArrowRight, Zap, Shield, Download} from "lucide-react"
 import { FaqSection } from "@/components/faq-section"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Card, CardContent } from "@/components/ui/card"
-import { OfflineIndicator } from "@/components/offline-indicator"
 
 export default function Home() {
   const [markdown, setMarkdown] = useState<string | null>(null)
   const [isConverting, setIsConverting] = useState(false)
   const [fileName, setFileName] = useState<string | null>(null)
 
-  // Clear all data when component unmounts (browser close/refresh)
-  useEffect(() => {
-    return () => {
-      // Clear any potential browser storage
-      try {
-        // We don't actually use these, but clear them just in case
-        localStorage.clear()
-        sessionStorage.clear()
-        
-        // Clear component state
-        setMarkdown(null)
-        setFileName(null)
-        setIsConverting(false)
-      } catch (error) {
-        // Ignore errors - some browsers may restrict access
-      }
-    }
-  }, [])
-
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <OfflineIndicator />
       <div className="container mx-auto py-12 px-4 max-w-6xl">
         {/* Hero Section */}
         <div className="relative overflow-hidden">
@@ -248,4 +227,3 @@ export default function Home() {
     </main>
   )
 }
-

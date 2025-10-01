@@ -11,26 +11,23 @@ interface DocumentLoaderProps {
 }
 
 export default function DocumentLoader({ file, isConverting, onLoad, onConversionComplete, onError }: DocumentLoaderProps) {
-  const [processors, setProcessors] = useState<any>(null)
+  const [pdf2md, setPdf2md] = useState<any>(null)
 
-  // Load the document processing libraries
+  // Load the pdf2md library
   useEffect(() => {
-    const loadProcessors = async () => {
+    const loadPdf2md = async () => {
       try {
         // Dynamic import of the pdf2md library
         const pdf2mdModule = await import("@opendocsg/pdf2md")
-        
-        setProcessors({
-          pdf2md: pdf2mdModule.default
-        })
+        setPdf2md(() => pdf2mdModule.default)
         onLoad()
       } catch (error) {
-        console.error("Failed to load document processing libraries:", error)
+        console.error("Failed to load pdf2md library:", error)
         onError("Failed to load conversion library. Please try again later.")
       }
     }
 
-    loadProcessors()
+    loadPdf2md()
   }, [onLoad, onError])
 
   // Handle text file conversion
@@ -119,7 +116,7 @@ Please convert your document to PDF for the best Markdown conversion experience.
   // Handle the conversion when triggered
   useEffect(() => {
     const convertDocument = async () => {
-      if (!file || !processors || !isConverting) return
+      if (!file || !pdf2md || !isConverting) return
 
       try {
         let markdown = ''
@@ -128,7 +125,7 @@ Please convert your document to PDF for the best Markdown conversion experience.
         if (fileName.endsWith('.pdf')) {
           // Convert PDF using pdf2md
           const pdfBuffer = await file.arrayBuffer()
-          markdown = await processors.pdf2md(pdfBuffer)
+          markdown = await pdf2md(pdfBuffer)
         } else if (fileName.endsWith('.txt')) {
           // Convert text file
           markdown = await convertTextFile(file)
@@ -152,10 +149,10 @@ Please convert your document to PDF for the best Markdown conversion experience.
       }
     }
 
-    if (isConverting && file && processors) {
+    if (isConverting && file && pdf2md) {
       convertDocument()
     }
-  }, [file, processors, isConverting, onConversionComplete, onError])
+  }, [file, pdf2md, isConverting, onConversionComplete, onError])
 
   // This component doesn't render anything visible
   return null

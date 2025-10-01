@@ -8,7 +8,7 @@ import { Upload, File, AlertCircle } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Progress } from "@/components/ui/progress"
 
-// Import the PDF2MD library dynamically to avoid SSR issues
+// Import the DocumentLoader dynamically to avoid SSR issues
 import dynamic from "next/dynamic"
 
 // This component will only be loaded in the browser
@@ -24,29 +24,9 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
   const [dragActive, setDragActive] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [pdf2mdLoaded, setPdf2mdLoaded] = useState(false)
+  const [documentLoaderLoaded, setDocumentLoaderLoaded] = useState(false)
   const [progress, setProgress] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
-
-  // Clean up any memory when component unmounts
-  useEffect(() => {
-    return () => {
-      // Clear file references to free memory
-      setSelectedFile(null)
-      setError(null)
-      setProgress(0)
-      
-      // Clear any file input
-      if (inputRef.current) {
-        inputRef.current.value = ''
-      }
-      
-      // Force garbage collection hints
-      if (window.gc) {
-        window.gc()
-      }
-    }
-  }, [])
 
   // Reset progress when starting a new conversion
   useEffect(() => {
@@ -140,19 +120,10 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
   }
 
   const handleConvert = async () => {
-    if (!selectedFile || !pdf2mdLoaded) return
+    if (!selectedFile || !documentLoaderLoaded) return
 
     setIsConverting(true)
     setError(null)
-
-    try {
-      // The actual conversion will be handled by the PDF2MDLoader component
-      // This is just a placeholder for the button click handler
-    } catch (error) {
-      console.error("Error converting PDF:", error)
-      setError("Failed to convert PDF. Please try a different file.")
-      setIsConverting(false)
-    }
   }
 
   return (
@@ -161,7 +132,7 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
       <DocumentLoader
         file={selectedFile}
         isConverting={isConverting}
-        onLoad={() => setPdf2mdLoaded(true)}
+        onLoad={() => setDocumentLoaderLoaded(true)}
         onConversionComplete={(markdown: string) => {
           if (selectedFile) {
             setProgress(100)
@@ -221,7 +192,7 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
                 Select Document
               </Button>
 
-              {selectedFile && pdf2mdLoaded && (
+              {selectedFile && documentLoaderLoaded && (
                 <Button onClick={handleConvert} disabled={isConverting}>
                   Convert to Markdown
                 </Button>
