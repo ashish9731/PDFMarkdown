@@ -1,118 +1,181 @@
-# PDF to Markdown Converter
+# PDFMarkdown – Lightning-Fast PDF to Markdown Converter
 
-Convert PDF files to Markdown instantly, securely, and 100% in your browser. No uploads, no privacy worries—just fast, accurate conversion.
+> Transform your PDF documents into clean, structured Markdown in seconds. Blazing fast, completely secure, and 100% browser-based.
 
-![PDF to Markdown Converter](public/og.png)
+[![GitHub Stars](https://img.shields.io/github/stars/ashish9731/PDFMarkdown?style=for-the-badge&logo=github&color=blue)](https://github.com/ashish9731/PDFMarkdown/stargazers)
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=for-the-badge)](LICENSE)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-orange.svg?style=for-the-badge)](https://pdfmarkdown.com)
 
 ---
 
-## ⭐ Why Star This Project?
-- 100% open source and free
-- No file uploads—your data never leaves your device
-- Fast, accurate, and easy to use
-- Perfect for developers, writers, and anyone who works with Markdown
+## ✨ Why PDFMarkdown?
 
-> **If you find this tool helpful, please consider starring the repo and sharing it!**
+- **⚡ Lightning Fast**: Convert PDFs in seconds with our optimized processing engine
+- **🔒 100% Secure**: Your files never leave your browser - complete privacy guaranteed
+- **🌍 Browser-Based**: No downloads, no installations - works instantly in any modern browser
+- **🆓 Free Forever**: Unlimited conversions with no restrictions or registration required
+- **📱 Cross-Platform**: Works on desktop, mobile, and tablet devices
+- **🚫 No Uploads**: All processing happens locally on your device
 
 ---
 
 ## 🚀 Features
-- **Browser-based**: All processing happens locally in your browser
-- **Privacy-first**: No files are uploaded or stored
-- **Supports**: Headings, lists, tables, basic formatting, and more
-- **Instant results**: Convert and download Markdown in seconds
-- **Offline capable**: Works even without an internet connection
-- **Open source**: Built with [@opendocsg/pdf2md](https://github.com/OpenDocSG/pdf2md)
+
+### 🎨 **Perfect Formatting Preservation**
+- Headings and subheadings (H1-H6)
+- Tables with proper structure
+- Lists (bulleted and numbered)
+- Bold and italic text styling
+- Links and references
+- Code blocks and inline code
+
+### 🔒 **Privacy & Security**
+- **Zero Data Collection**: No tracking, no analytics on your files
+- **Offline Capable**: Works without internet connection
+- **Local Processing**: Everything happens in your browser
+- **No Storage**: Files are never saved or cached
+
+### 💨 **Performance**
+- Instant conversion for most documents
+- Optimized for large files (up to 25MB recommended)
+- Memory-efficient processing
+- Real-time preview
 
 ---
 
-## 🛠️ How It Works
-1. **Upload your PDF**: Drag and drop or select a PDF file
-2. **Conversion**: The app uses the `@opendocsg/pdf2md` library to extract text, structure, and formatting from your PDF
-3. **Markdown Output**: The extracted content is converted to Markdown and displayed instantly
-4. **Download or Copy**: Download the Markdown file or copy it to your clipboard
+## 🛠️ Quick Start
 
-**All processing is done in your browser. Your files never leave your device.**
+### Option 1: Use Online (Recommended)
+Visit [**pdfmarkdown.com**](https://pdfmarkdown.com) and start converting immediately!
 
----
+### Option 2: Run Locally
+```bash
+# Clone the repository
+git clone https://github.com/ashish9731/PDFMarkdown.git
+cd PDFMarkdown
 
-## ❓ FAQ
+# Install dependencies
+npm install
+# or
+yarn install
+# or
+pnpm install
 
-### How does the PDF to Markdown conversion work?
-- The tool uses `@opendocsg/pdf2md` to extract text and structure from your PDF, then converts it to Markdown syntax. All processing is local—no uploads!
+# Start development server
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
 
-### What formatting is preserved?
-- Headings, paragraphs, lists, tables, bold/italic text, and links (when possible).
-- Complex layouts, images, and advanced formatting may not be fully preserved.
-
-### Is my data secure?
-- **Yes!** Everything happens in your browser. No data is uploaded or stored anywhere.
-
-### Is there a file size limit?
-- For best performance, keep files under 10MB. Larger files may slow down your browser.
-
-### Can I use this tool offline?
-- Yes! Once loaded, the app works without an internet connection.
-
-### Which browsers are supported?
-- All modern browsers: Chrome, Firefox, Edge, Safari, Opera.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🔒 Security & Privacy
-- **100% browser-based**: No server-side processing
-- **No uploads**: Your files never leave your device
-- **No storage**: Nothing is saved after you close the tab
+## 📚 How It Works
+
+1. **Upload**: Drag & drop or select your PDF file
+2. **Convert**: Our engine processes your file locally using advanced algorithms
+3. **Preview**: See both the Markdown code and rendered preview
+4. **Download**: Get your converted Markdown file instantly
+
+**All processing happens in your browser - your files never leave your device!**
 
 ---
 
-## 📦 Usage
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/mrmps/pdf2md
-   cd pdf2md
-   ```
-2. Install dependencies:
-   ```bash
-   pnpm install
-   ```
-   or
-   ```bash
-   npm install
-   ```
-   or
-   ```bash
-   yarn install
-   ```
-3. Start the development server:
-   ```bash
-   pnpm dev
-   ```
-   or
-   ```bash
-   npm run dev
-   ```
-   or
-   ```bash
-   yarn dev
-   ```
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+## 🎨 Technology Stack
+
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Styling**: Tailwind CSS, shadcn/ui components
+- **PDF Processing**: @opendocsg/pdf2md
+- **Deployment**: Vercel (recommended)
+
+---
+
+## 📊 Supported Formats
+
+### ✅ **Fully Supported**
+- Text-based PDFs (not scanned images)
+- Documents with clear structure
+- Standard fonts and encoding
+- Simple to moderate layouts
+
+### ⚠️ **Limited Support**
+- Complex multi-column layouts
+- Scanned documents (OCR not included)
+- PDFs with forms or annotations
+- Images (converted to placeholders)
+
+---
+
+## 💰 Pricing
+
+**PDFMarkdown is completely FREE forever!**
+
+- ✅ Unlimited conversions
+- ✅ No file size restrictions (25MB recommended for performance)
+- ✅ No registration required
+- ✅ No watermarks
+- ✅ All features included
 
 ---
 
 ## 🤝 Contributing
-Contributions are welcome! Please open issues or pull requests for improvements, bug fixes, or new features.
+
+We welcome contributions! Here's how you can help:
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin amazing-feature`)
+5. **Open** a Pull Request
+
+### Development Guidelines
+- Follow TypeScript best practices
+- Use ESLint and Prettier for code formatting
+- Write meaningful commit messages
+- Test your changes thoroughly
 
 ---
 
-## 📄 License
-MIT — see [LICENSE](LICENSE) for details.
+## 📝 FAQ
+
+**Q: Is my data secure?**
+A: Absolutely! All processing happens in your browser. Your files never leave your device.
+
+**Q: Are there any file size limits?**
+A: No hard limits, but we recommend files under 25MB for optimal performance.
+
+**Q: Can I use this offline?**
+A: Yes! Once the page loads, you can use PDFMarkdown without an internet connection.
+
+**Q: What browsers are supported?**
+A: All modern browsers including Chrome, Firefox, Safari, Edge, and Opera.
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 ## ⭐ Show Your Support
-If you found this project useful, please **star the repo** and share it with others!
+
+If PDFMarkdown helped you, please consider:
+
+- ⭐ **Starring** this repository
+- 💬 **Sharing** with your friends and colleagues
+- 🐛 **Reporting** bugs or requesting features
+- 📝 **Contributing** to the project
 
 ---
 
-Made with ❤️ by Michael Ryaboy and the open-source community. 
+<div align="center">
+
+**Built with ❤️ by the PDFMarkdown Team**
+
+[**Try PDFMarkdown Now →**](https://pdfmarkdown.com)
+
+</div> 

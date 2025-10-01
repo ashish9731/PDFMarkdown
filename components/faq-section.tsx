@@ -1,173 +1,236 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { HelpCircle, Shield, Zap, Globe, Download, FileText, Cpu, Lock } from "lucide-react"
 
 export function FaqSection() {
   return (
-    <Card className="mt-10">
-      <CardHeader>
-        <CardTitle className="text-2xl">Frequently Asked Questions</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="item-1">
-            <AccordionTrigger>How does the PDF to Markdown conversion work?</AccordionTrigger>
-            <AccordionContent>
-              <p className="mb-2">
-                This tool uses the <code>@opendocsg/pdf2md</code> library to convert PDF documents to Markdown format.
-                The process works as follows:
-              </p>
-              <ol className="list-decimal pl-5 space-y-1">
-                <li>Your PDF file is processed entirely in your browser</li>
-                <li>The PDF content is extracted, including text, basic formatting, and structure</li>
-                <li>The extracted content is converted to Markdown syntax</li>
-                <li>The resulting Markdown is displayed in your browser</li>
-              </ol>
-              <p className="mt-2">
-                <strong>Your files never leave your device</strong> - all processing happens locally in your browser.
-              </p>
-            </AccordionContent>
-          </AccordionItem>
+    <div className="relative">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-pink-50/50 dark:from-blue-900/10 dark:via-purple-900/5 dark:to-pink-900/10 rounded-3xl" />
+      
+      <Card className="relative bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-blue-200 dark:border-gray-700 shadow-xl">
+        <CardHeader className="text-center pb-8">
+          <div className="flex justify-center mb-4">
+            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
+              <HelpCircle className="w-8 h-8 text-white" />
+            </div>
+          </div>
+          <CardTitle className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+            Frequently Asked Questions
+          </CardTitle>
+          <p className="text-lg text-gray-600 dark:text-gray-400 mt-2">
+            Everything you need to know about PDFMarkdown
+          </p>
+        </CardHeader>
+        <CardContent className="px-8 pb-8">
+          <Accordion type="single" collapsible className="w-full space-y-4">
+            <AccordionItem value="item-1" className="border border-blue-100 dark:border-gray-700 rounded-lg px-6 bg-gradient-to-r from-blue-50/50 to-purple-50/50 dark:from-blue-900/10 dark:to-purple-900/10">
+              <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <Zap className="w-5 h-5 text-blue-600" />
+                  How does the PDF to Markdown conversion work?
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-700 dark:text-gray-300">
+                <div className="space-y-3 pt-2">
+                  <p>
+                    PDFMarkdown uses advanced browser-based processing powered by the <code className="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded text-sm">@opendocsg/pdf2md</code> library.
+                    Here's how it works:
+                  </p>
+                  <ol className="list-decimal pl-6 space-y-2">
+                    <li>Your PDF file is processed entirely within your browser</li>
+                    <li>Advanced algorithms extract text, formatting, and document structure</li>
+                    <li>Content is intelligently converted to clean Markdown syntax</li>
+                    <li>Results are displayed instantly with preview and download options</li>
+                  </ol>
+                  <div className="flex items-center gap-2 mt-4">
+                    <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                      <Shield className="w-3 h-3 mr-1" />
+                      100% Private
+                    </Badge>
+                    <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                      <Zap className="w-3 h-3 mr-1" />
+                      Lightning Fast
+                    </Badge>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
 
-          <AccordionItem value="item-2">
-            <AccordionTrigger>What are the limitations of PDF to Markdown conversion?</AccordionTrigger>
-            <AccordionContent>
-              <p className="mb-2">
-                While our converter works well for most documents, PDF to Markdown conversion has some inherent
-                limitations:
-              </p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>Complex layouts may not be preserved exactly as in the original PDF</li>
-                <li>Tables might not convert perfectly, especially complex ones with merged cells</li>
-                <li>Images in the PDF are not included in the Markdown output</li>
-                <li>PDF-specific features like forms, annotations, and comments are not supported</li>
-                <li>Some special characters or symbols might not convert correctly</li>
-                <li>Documents with multiple columns may have text flow issues in the conversion</li>
-              </ul>
-              <p className="mt-2">For best results, use PDFs with simple layouts and primarily text content.</p>
-            </AccordionContent>
-          </AccordionItem>
+            <AccordionItem value="item-2" className="border border-purple-100 dark:border-gray-700 rounded-lg px-6 bg-gradient-to-r from-purple-50/50 to-pink-50/50 dark:from-purple-900/10 dark:to-pink-900/10">
+              <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <FileText className="w-5 h-5 text-purple-600" />
+                  What formatting and features are supported?
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-700 dark:text-gray-300">
+                <div className="space-y-3 pt-2">
+                  <p className="font-medium text-green-700 dark:text-green-400">✅ Fully Supported:</p>
+                  <ul className="list-disc pl-6 space-y-1">
+                    <li>Headings and subheadings (H1-H6)</li>
+                    <li>Paragraphs and text blocks</li>
+                    <li>Bulleted and numbered lists</li>
+                    <li>Tables with proper formatting</li>
+                    <li>Bold and italic text styling</li>
+                    <li>Links and references</li>
+                    <li>Code blocks and inline code</li>
+                  </ul>
+                  <p className="font-medium text-amber-700 dark:text-amber-400 mt-4">⚠️ Limited Support:</p>
+                  <ul className="list-disc pl-6 space-y-1">
+                    <li>Complex multi-column layouts</li>
+                    <li>Images (extracted as placeholders)</li>
+                    <li>Advanced table formatting</li>
+                    <li>Custom fonts and colors</li>
+                  </ul>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
 
-          <AccordionItem value="item-3">
-            <AccordionTrigger>What formatting is preserved in the conversion?</AccordionTrigger>
-            <AccordionContent>
-              <p className="mb-2">The converter attempts to preserve the following elements:</p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>Headings and subheadings (converted to Markdown heading levels)</li>
-                <li>Paragraphs and basic text flow</li>
-                <li>Basic lists (bulleted and numbered)</li>
-                <li>Simple tables (converted to Markdown table syntax)</li>
-                <li>Basic text formatting like bold and italic (when detectable)</li>
-                <li>Links (when properly embedded in the PDF)</li>
-              </ul>
-              <p className="mt-2">
-                More complex formatting like colors, fonts, text size, and alignment are not preserved in Markdown.
-              </p>
-            </AccordionContent>
-          </AccordionItem>
+            <AccordionItem value="item-3" className="border border-green-100 dark:border-gray-700 rounded-lg px-6 bg-gradient-to-r from-green-50/50 to-blue-50/50 dark:from-green-900/10 dark:to-blue-900/10">
+              <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <Lock className="w-5 h-5 text-green-600" />
+                  How secure is my data?
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-700 dark:text-gray-300">
+                <div className="space-y-3 pt-2">
+                  <p className="font-semibold text-green-700 dark:text-green-400">Your privacy is our top priority:</p>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Shield className="w-4 h-4 text-green-600" />
+                        <span className="font-medium">100% Browser-Based</span>
+                      </div>
+                      <p className="text-sm pl-6">Files never leave your device</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Lock className="w-4 h-4 text-green-600" />
+                        <span className="font-medium">Zero Storage</span>
+                      </div>
+                      <p className="text-sm pl-6">No data retention anywhere</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Globe className="w-4 h-4 text-green-600" />
+                        <span className="font-medium">Offline Capable</span>
+                      </div>
+                      <p className="text-sm pl-6">Works without internet</p>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Cpu className="w-4 h-4 text-green-600" />
+                        <span className="font-medium">Local Processing</span>
+                      </div>
+                      <p className="text-sm pl-6">All on your machine</p>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
 
-          <AccordionItem value="item-4">
-            <AccordionTrigger>Is there a file size limit?</AccordionTrigger>
-            <AccordionContent>
-              <p>
-                Yes, the recommended maximum file size is 10MB. Larger files may cause performance issues or browser
-                slowdowns. Since all processing happens in your browser, very large files might cause your browser to
-                become unresponsive.
-              </p>
-            </AccordionContent>
-          </AccordionItem>
+            <AccordionItem value="item-4" className="border border-blue-100 dark:border-gray-700 rounded-lg px-6 bg-gradient-to-r from-blue-50/50 to-cyan-50/50 dark:from-blue-900/10 dark:to-cyan-900/10">
+              <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <Download className="w-5 h-5 text-blue-600" />
+                  Are there any file size or usage limits?
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-700 dark:text-gray-300">
+                <div className="space-y-3 pt-2">
+                  <div className="bg-gradient-to-r from-green-100 to-blue-100 dark:from-green-900/20 dark:to-blue-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
+                    <p className="font-semibold text-green-800 dark:text-green-200 mb-2">✨ Unlimited & Free Forever</p>
+                    <ul className="space-y-1 text-sm">
+                      <li>• No file count limits</li>
+                      <li>• No daily/monthly restrictions</li>
+                      <li>• No registration required</li>
+                      <li>• Completely free to use</li>
+                    </ul>
+                  </div>
+                  <p className="text-sm">
+                    <strong>Recommended:</strong> Files under 25MB for optimal performance. Larger files may take longer to process depending on your device capabilities.
+                  </p>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
 
-          <AccordionItem value="item-5">
-            <AccordionTrigger>Is my PDF content secure?</AccordionTrigger>
-            <AccordionContent>
-              <p className="mb-2">Yes, your data is completely secure:</p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>
-                  <strong>100% browser-based</strong> - your files never leave your device
-                </li>
-                <li>No data is uploaded to any server</li>
-                <li>No data is stored anywhere except temporarily in your browser's memory</li>
-                <li>The tool works even when you're offline</li>
-                <li>Your privacy is completely protected</li>
-              </ul>
-              <p className="mt-2">
-                This makes our tool ideal for sensitive documents, as the content never leaves your computer.
-              </p>
-            </AccordionContent>
-          </AccordionItem>
+            <AccordionItem value="item-5" className="border border-purple-100 dark:border-gray-700 rounded-lg px-6 bg-gradient-to-r from-purple-50/50 to-pink-50/50 dark:from-purple-900/10 dark:to-pink-900/10">
+              <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <Globe className="w-5 h-5 text-purple-600" />
+                  Which browsers and devices are supported?
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-700 dark:text-gray-300">
+                <div className="space-y-3 pt-2">
+                  <p className="font-medium">PDFMarkdown works on all modern browsers:</p>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <p className="font-medium text-blue-700 dark:text-blue-400 mb-2">Desktop Browsers:</p>
+                      <ul className="list-disc pl-6 space-y-1 text-sm">
+                        <li>Google Chrome (Recommended)</li>
+                        <li>Mozilla Firefox</li>
+                        <li>Microsoft Edge</li>
+                        <li>Safari</li>
+                        <li>Opera</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p className="font-medium text-purple-700 dark:text-purple-400 mb-2">Mobile Devices:</p>
+                      <ul className="list-disc pl-6 space-y-1 text-sm">
+                        <li>iOS Safari</li>
+                        <li>Chrome Mobile</li>
+                        <li>Firefox Mobile</li>
+                        <li>Samsung Internet</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <p className="text-sm bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-800">
+                    💡 <strong>Tip:</strong> For the best experience, use the latest version of your browser with JavaScript enabled.
+                  </p>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
 
-          <AccordionItem value="item-6">
-            <AccordionTrigger>Why is my conversion taking a long time?</AccordionTrigger>
-            <AccordionContent>
-              <p className="mb-2">Conversion time depends on several factors:</p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>File size - larger PDFs take longer to process</li>
-                <li>Document complexity - PDFs with complex layouts require more processing</li>
-                <li>Your device's processing power - faster computers will convert more quickly</li>
-                <li>Browser performance - some browsers handle PDF processing better than others</li>
-              </ul>
-              <p className="mt-2">
-                Most conversions complete within a few seconds. If your browser becomes unresponsive, try using a
-                smaller PDF or a more powerful device.
-              </p>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-7">
-            <AccordionTrigger>Which browsers are supported?</AccordionTrigger>
-            <AccordionContent>
-              <p className="mb-2">This tool works on all modern browsers, including:</p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>Google Chrome (recommended)</li>
-                <li>Mozilla Firefox</li>
-                <li>Microsoft Edge</li>
-                <li>Safari</li>
-                <li>Opera</li>
-              </ul>
-              <p className="mt-2">For the best experience, make sure your browser is updated to the latest version.</p>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-8">
-            <AccordionTrigger>Can I use this tool offline?</AccordionTrigger>
-            <AccordionContent>
-              <p>
-                Yes! Once the page has loaded, you can use this tool completely offline. All the necessary code is
-                loaded in your browser, and no internet connection is required for the conversion process. This makes it
-                perfect for working in environments with limited or no internet access.
-              </p>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-9">
-            <AccordionTrigger>How can I improve conversion results?</AccordionTrigger>
-            <AccordionContent>
-              <p className="mb-2">For better conversion results:</p>
-              <ul className="list-disc pl-5 space-y-1">
-                <li>Use PDFs with clear text (not scanned documents)</li>
-                <li>Choose PDFs with simple layouts rather than complex designs</li>
-                <li>Ensure the PDF has proper text encoding (not just images of text)</li>
-                <li>Use PDFs with standard fonts</li>
-                <li>Remove unnecessary elements like headers, footers, and page numbers if possible</li>
-              </ul>
-              <p className="mt-2">
-                If you're creating a PDF specifically for conversion to Markdown, use a simple layout with clear heading
-                structure.
-              </p>
-            </AccordionContent>
-          </AccordionItem>
-
-          <AccordionItem value="item-10">
-            <AccordionTrigger>Can I use this tool for commercial purposes?</AccordionTrigger>
-            <AccordionContent>
-              <p>
-                Yes, this tool can be used for both personal and commercial purposes. However, please note that the
-                underlying library (@opendocsg/pdf2md) has its own license terms that you should review if you're
-                planning to incorporate this functionality into your own applications.
-              </p>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </CardContent>
-    </Card>
+            <AccordionItem value="item-6" className="border border-green-100 dark:border-gray-700 rounded-lg px-6 bg-gradient-to-r from-green-50/50 to-emerald-50/50 dark:from-green-900/10 dark:to-emerald-900/10">
+              <AccordionTrigger className="text-left font-semibold hover:no-underline">
+                <div className="flex items-center gap-3">
+                  <Zap className="w-5 h-5 text-green-600" />
+                  How can I get the best conversion results?
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="text-gray-700 dark:text-gray-300">
+                <div className="space-y-3 pt-2">
+                  <p className="font-medium">Follow these tips for optimal results:</p>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="font-medium text-green-700 dark:text-green-400 mb-2">📄 Best PDF Types:</p>
+                      <ul className="list-disc pl-6 space-y-1 text-sm">
+                        <li>Text-based PDFs (not scanned images)</li>
+                        <li>Documents with clear structure</li>
+                        <li>Simple, clean layouts</li>
+                        <li>Standard fonts and encoding</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p className="font-medium text-blue-700 dark:text-blue-400 mb-2">⚡ Performance Tips:</p>
+                      <ul className="list-disc pl-6 space-y-1 text-sm">
+                        <li>Close unnecessary browser tabs</li>
+                        <li>Use files under 25MB when possible</li>
+                        <li>Ensure sufficient device memory</li>
+                        <li>Update your browser to the latest version</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </CardContent>
+      </Card>
+    </div>
   )
 }
