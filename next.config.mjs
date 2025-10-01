@@ -8,7 +8,13 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    domains: [],
   },
+  // Optimize for Vercel deployment
+  output: 'standalone',
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: false,
   // Enable service worker and offline functionality
   headers: async () => {
     return [
@@ -25,10 +31,31 @@ const nextConfig = {
           },
         ],
       },
+      // Security headers for professional deployment
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+        ],
+      },
     ]
   },
-  // Disable telemetry and analytics
-  telemetry: false,
+  // Experimental features for better performance
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react'],
+  },
 }
 
 export default nextConfig

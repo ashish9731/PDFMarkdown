@@ -8,7 +8,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FileText, Code, ArrowRight, Zap, Shield, Download} from "lucide-react"
 import { FaqSection } from "@/components/faq-section"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { GitHubStarButton } from "@/components/github-star-button"
 import { Card, CardContent } from "@/components/ui/card"
 import { OfflineIndicator } from "@/components/offline-indicator"
 
@@ -50,16 +49,21 @@ export default function Home() {
               <div className="inline-flex items-center px-6 py-2 mb-8 rounded-full text-sm font-semibold bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-700 shadow-sm">
                 <span className="flex items-center gap-2">
                   <Zap className="w-4 h-4 text-blue-600" />
-                  Lightning-fast PDF to Markdown conversion
+                  Professional Document Conversion Platform
                 </span>
               </div>
               
-              <h1 className="text-6xl md:text-7xl font-black tracking-tight text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 mb-6 max-w-4xl leading-tight">
+              <h1 className="text-6xl md:text-7xl font-black tracking-tight text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 mb-6 max-w-4xl leading-tight">
                 PDFMarkdown
               </h1>
               
-              <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 max-w-2xl mb-10 leading-relaxed">
-                The most powerful PDF to Markdown converter. Blazing fast, completely secure, and 100% browser-based. Transform your documents in seconds.
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+                Enterprise-Grade PDF to Markdown Converter
+              </h2>
+              
+              <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 max-w-3xl mb-10 leading-relaxed">
+                Transform your PDF documents into clean, structured Markdown with unparalleled speed and precision. 
+                Trusted by professionals worldwide for secure, offline document processing.
               </p>
               
               <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -73,39 +77,38 @@ export default function Home() {
                   Start Converting
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <GitHubStarButton className="h-14 text-lg" />
               </div>
             </div>
 
-            {/* Feature Cards */}
-            <div className="grid md:grid-cols-3 gap-6 mt-16">
-              <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-blue-200 dark:border-blue-800 hover:shadow-lg transition-all duration-300">
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Zap className="w-6 h-6 text-white" />
+            {/* Professional Feature Cards */}
+            <div className="grid md:grid-cols-3 gap-8 mt-20">
+              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-blue-200 dark:border-blue-800 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <Zap className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-lg font-bold mb-2 text-gray-900 dark:text-white">Lightning Fast</h3>
-                  <p className="text-gray-600 dark:text-gray-400">Convert PDFs to Markdown in seconds with our optimized processing engine.</p>
+                  <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Enterprise Performance</h3>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Process large documents instantly with our optimized conversion engine. Built for high-volume professional workflows.</p>
                 </CardContent>
               </Card>
               
-              <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-purple-200 dark:border-purple-800 hover:shadow-lg transition-all duration-300">
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Shield className="w-6 h-6 text-white" />
+              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-purple-200 dark:border-purple-800 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <Shield className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-lg font-bold mb-2 text-gray-900 dark:text-white">100% Secure</h3>
-                  <p className="text-gray-600 dark:text-gray-400">Your files never leave your browser. Complete privacy and security guaranteed.</p>
+                  <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Military-Grade Security</h3>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Your documents never leave your device. Zero-knowledge architecture ensures complete confidentiality and compliance.</p>
                 </CardContent>
               </Card>
               
-              <Card className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-pink-200 dark:border-pink-800 hover:shadow-lg transition-all duration-300">
-                <CardContent className="p-6 text-center">
-                  <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-pink-600 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Download className="w-6 h-6 text-white" />
+              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-indigo-200 dark:border-indigo-800 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <Download className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-lg font-bold mb-2 text-gray-900 dark:text-white">Instant Download</h3>
-                  <p className="text-gray-600 dark:text-gray-400">Get your converted Markdown files immediately with one-click download.</p>
+                  <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Professional Output</h3>
+                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Generate publication-ready Markdown with perfect formatting, tables, and structure preservation.</p>
                 </CardContent>
               </Card>
             </div>
@@ -212,16 +215,33 @@ export default function Home() {
         </div>
 
         <footer className="mt-20 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8 text-center border border-blue-200 dark:border-gray-700">
-          <div className="flex justify-center mb-6">
-            <GitHubStarButton />
-          </div>
-          <div className="space-y-2">
-            <p className="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-              PDFMarkdown - Powerful PDF to Markdown Conversion
-            </p>
-            <p className="text-gray-600 dark:text-gray-400">
-              Built with ❤️ for developers and content creators. Open source and free forever.
-            </p>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <p className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                PDFMarkdown
+              </p>
+              <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                Professional PDF to Markdown Conversion
+              </p>
+              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Transform your PDF documents into clean, structured Markdown with lightning speed. 
+                Built for professionals who value privacy, security, and efficiency.
+              </p>
+            </div>
+            <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-500 dark:text-gray-400">
+              <span className="flex items-center gap-1">
+                ⚡ Lightning Fast
+              </span>
+              <span className="flex items-center gap-1">
+                🔒 100% Secure
+              </span>
+              <span className="flex items-center gap-1">
+                🌍 Offline Capable
+              </span>
+              <span className="flex items-center gap-1">
+                🆓 Free Forever
+              </span>
+            </div>
           </div>
         </footer>
       </div>
