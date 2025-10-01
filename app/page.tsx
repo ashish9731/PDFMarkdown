@@ -15,12 +15,19 @@ export default function Home() {
   const [isConverting, setIsConverting] = useState(false)
   const [fileName, setFileName] = useState<string | null>(null)
 
-  // Function to format JSON for display
+  // Function to format JSON for display with truncation of long strings
   const formatJson = (json: any): string => {
     try {
-      return JSON.stringify(json, null, 2)
+      // Custom replacer to truncate long strings
+      const replacer = (key: string, value: any) => {
+        if (typeof value === 'string' && value.length > 1000) {
+          return value.substring(0, 1000) + '... (truncated)';
+        }
+        return value;
+      };
+      return JSON.stringify(json, replacer, 2);
     } catch (error) {
-      return typeof json === 'string' ? json : JSON.stringify(json)
+      return typeof json === 'string' ? json : JSON.stringify(json);
     }
   }
 
@@ -209,11 +216,15 @@ export default function Home() {
                         <TabsContent value="json" className="p-0">
                           <ScrollArea className="h-[400px] w-full rounded-md border">
                             <div className="p-4">
-                              <pre className="text-sm bg-muted p-4 rounded-md overflow-auto">
-                                <code>
+                              <pre className="text-sm bg-muted p-4 rounded-md overflow-auto max-w-full">
+                                <code className="whitespace-pre-wrap break-words">
                                   {formatJson(conversionResult.json)}
                                 </code>
                               </pre>
+                              <p className="text-xs text-muted-foreground mt-2">
+                                Note: Long content strings have been truncated for better readability. 
+                                Use "Copy JSON" or "Download JSON" to get the full data.
+                              </p>
                             </div>
                           </ScrollArea>
                         </TabsContent>

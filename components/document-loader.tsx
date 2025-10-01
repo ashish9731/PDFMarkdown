@@ -68,7 +68,7 @@ export default function DocumentLoader({ file, isConverting, onLoad, onConversio
     const jsonResult = {
       type: "text",
       filename: file.name,
-      content: text,
+      contentLength: text.length,
       lines: lines.length,
       markdown: markdown.trim()
     }
@@ -105,7 +105,7 @@ ${text}
     const jsonResult = {
       type: "python",
       filename: file.name,
-      content: text,
+      contentLength: text.length,
       lines: lines.length,
       functions: functions,
       classes: classes,
@@ -136,7 +136,7 @@ ${text}
     // Add RTF specific info to JSON
     if (result.json) {
       result.json.type = "rtf"
-      result.json.originalRtf = text
+      result.json.originalLength = text.length
     }
     
     return result
@@ -184,7 +184,7 @@ ${text}
       const jsonResult = {
         type: "docx",
         filename: file.name,
-        content: result.value, // Original HTML content
+        contentLength: result.value.length,
         markdown: markdown,
         messages: result.messages,
         conversionInfo: {
