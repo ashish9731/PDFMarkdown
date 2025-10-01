@@ -1,14 +1,14 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { FileUploader } from "@/components/file-uploader"
 import { MarkdownPreview } from "@/components/markdown-preview"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { FileText, Code, ArrowRight, Zap, Shield, Download} from "lucide-react"
+import { FileText, Code, ArrowRight, FileIcon, Lock, Zap } from "lucide-react"
 import { FaqSection } from "@/components/faq-section"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function Home() {
   const [markdown, setMarkdown] = useState<string | null>(null)
@@ -16,214 +16,184 @@ export default function Home() {
   const [fileName, setFileName] = useState<string | null>(null)
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <div className="container mx-auto py-12 px-4 max-w-6xl">
+    <div className="min-h-screen bg-background">
+      <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
-        <div className="relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 via-purple-600/5 to-pink-600/10 rounded-3xl" />
+        <section className="text-center py-16 md:py-24">
+          <div className="inline-flex items-center rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary mb-6">
+            <Zap className="mr-2 h-4 w-4" />
+            Professional Document Conversion
+          </div>
           
-          {/* Hero content */}
-          <div className="relative space-y-12 py-16">
-            <div className="flex flex-col items-center text-center">
-              <div className="inline-flex items-center px-6 py-2 mb-8 rounded-full text-sm font-semibold bg-gradient-to-r from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 text-blue-800 dark:text-blue-200 border border-blue-200 dark:border-blue-700 shadow-sm">
-                <span className="flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-blue-600" />
-                  Professional Document Conversion Platform
-                </span>
-              </div>
-              
-              <h1 className="text-6xl md:text-7xl font-black tracking-tight text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 mb-6 max-w-4xl leading-tight">
-                PDFMarkdown
-              </h1>
-              
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">
-                Enterprise-Grade PDF to Markdown Converter
-              </h2>
-              
-              <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 max-w-3xl mb-10 leading-relaxed">
-                Transform your PDF documents into clean, structured Markdown with unparalleled speed and precision. 
-                Trusted by professionals worldwide for secure, offline document processing.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row items-center gap-4">
-                <Button 
-                  size="lg"
-                  className="h-14 px-8 text-lg font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                  onClick={() => {
-                    document.querySelector('#converter')?.scrollIntoView({ behavior: 'smooth' })
-                  }}
-                >
-                  Start Converting
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </div>
-            </div>
-
-            {/* Professional Feature Cards */}
-            <div className="grid md:grid-cols-3 gap-8 mt-20">
-              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-blue-200 dark:border-blue-800 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <Zap className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Enterprise Performance</h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Process large documents instantly with our optimized conversion engine. Built for high-volume professional workflows.</p>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-purple-200 dark:border-purple-800 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <Shield className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Military-Grade Security</h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Your documents never leave your device. Zero-knowledge architecture ensures complete confidentiality and compliance.</p>
-                </CardContent>
-              </Card>
-              
-              <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-indigo-200 dark:border-indigo-800 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <Download className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Professional Output</h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">Generate publication-ready Markdown with perfect formatting, tables, and structure preservation.</p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid gap-12 mt-20" id="converter">
-          <div className="transition-all duration-200 hover:scale-[1.01]">
-            <FileUploader
-              onConversionComplete={(result, file) => {
-                setMarkdown(result)
-                setFileName(file.name)
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent mb-6">
+            Convert Documents to Markdown
+          </h1>
+          
+          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
+            Transform your PDFs, Word documents, and text files into clean, structured Markdown with precision and security.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button 
+              size="lg" 
+              className="w-full sm:w-auto"
+              onClick={() => {
+                document.getElementById('converter')?.scrollIntoView({ behavior: 'smooth' })
               }}
-              isConverting={isConverting}
-              setIsConverting={setIsConverting}
-            />
+            >
+              Start Converting
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
           </div>
+        </section>
 
-          {markdown && (
-            <div className="space-y-6">
-              <div className="flex justify-between items-center mb-8">
-                <div className="space-y-1">
-                  <h2 className="text-2xl font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
-                    Conversion Result
-                  </h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {fileName?.replace(/\.pdf$/i, '')}
-                  </p>
+        {/* Features Section */}
+        <section className="py-16">
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card>
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <Lock className="h-6 w-6 text-primary" />
                 </div>
-                <div className="flex items-center gap-2">
-                  <Button
-                    onClick={() => {
-                      navigator.clipboard.writeText(markdown || "")
-                      alert("Markdown copied to clipboard!")
-                    }}
-                    className="h-9 font-medium bg-white hover:bg-gray-50 dark:bg-gray-900 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400"
-                  >
-                    Copy
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      if (!markdown || !fileName) return
-
-                      const element = document.createElement("a")
-                      const file = new Blob([markdown], { type: "text/markdown" })
-                      element.href = URL.createObjectURL(file)
-                      element.download = fileName.replace(/\.pdf$/i, "") + ".md"
-                      document.body.appendChild(element)
-                      element.click()
-                      document.body.removeChild(element)
-                    }}
-                    className="h-9 font-medium bg-black text-white hover:bg-gray-900 dark:bg-white dark:text-black dark:hover:bg-gray-100"
-                  >
-                    <FileText className="mr-1.5 h-4 w-4" />
-                    Download
-                  </Button>
+                <CardTitle>100% Secure</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Your documents never leave your device. All processing happens locally in your browser.
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <FileIcon className="h-6 w-6 text-primary" />
                 </div>
-              </div>
+                <CardTitle>Multiple Formats</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Support for PDF, DOCX, DOC, TXT, and RTF files with accurate conversion.
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <Zap className="h-6 w-6 text-primary" />
+                </div>
+                <CardTitle>Lightning Fast</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">
+                  Convert documents in seconds with our optimized processing engine.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
 
-              <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden shadow-sm">
-                <Tabs defaultValue="preview" className="w-full">
-                  <TabsList className="flex h-12 items-center gap-4 px-4 border-b border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50">
-                    <TabsTrigger 
-                      value="preview" 
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm transition-all"
-                    >
-                      <FileText className="h-4 w-4" />
-                      Preview
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="markdown"
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm transition-all"
-                    >
-                      <Code className="h-4 w-4" />
-                      Markdown
-                    </TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="preview" className="p-6">
-                    <div className="overflow-x-auto">
-                      <div className="max-w-full">
+        {/* Converter Section */}
+        <section id="converter" className="py-16">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">Document Converter</CardTitle>
+              <CardDescription>
+                Upload your document and convert it to clean Markdown format
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <FileUploader
+                onConversionComplete={(result, file) => {
+                  setMarkdown(result)
+                  setFileName(file.name)
+                }}
+                isConverting={isConverting}
+                setIsConverting={setIsConverting}
+              />
+              
+              {markdown && (
+                <div className="mt-8 space-y-6">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <h2 className="text-xl font-semibold">Conversion Result</h2>
+                      <p className="text-sm text-muted-foreground">
+                        {fileName?.replace(/\.[^/.]+$/, "")}
+                      </p>
+                    </div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          navigator.clipboard.writeText(markdown)
+                        }}
+                      >
+                        Copy
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          if (!markdown || !fileName) return
+                          const element = document.createElement("a")
+                          const file = new Blob([markdown], { type: "text/markdown" })
+                          element.href = URL.createObjectURL(file)
+                          element.download = fileName.replace(/\.[^/.]+$/, "") + ".md"
+                          document.body.appendChild(element)
+                          element.click()
+                          document.body.removeChild(element)
+                        }}
+                      >
+                        <FileText className="mr-2 h-4 w-4" />
+                        Download
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
+                    <Tabs defaultValue="preview">
+                      <TabsList className="grid w-full grid-cols-2">
+                        <TabsTrigger value="preview">Preview</TabsTrigger>
+                        <TabsTrigger value="markdown">Markdown</TabsTrigger>
+                      </TabsList>
+                      <TabsContent value="preview" className="p-4">
                         <MarkdownPreview markdown={markdown} />
-                      </div>
-                    </div>
-                  </TabsContent>
-                  <TabsContent value="markdown">
-                    <div className="relative">
-                      <ScrollArea className="h-[600px] w-full">
-                        <div className="p-6">
-                          <pre className="text-sm font-mono text-gray-800 dark:text-gray-200 overflow-x-auto">
-                            <code className="whitespace-pre-wrap [overflow-wrap:anywhere]">{markdown}</code>
-                          </pre>
-                        </div>
-                      </ScrollArea>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </div>
-            </div>
-          )}
-        </div>
-        
-        <div className="mt-20">
-          <FaqSection />
-        </div>
+                      </TabsContent>
+                      <TabsContent value="markdown" className="p-0">
+                        <ScrollArea className="h-[400px] w-full rounded-md border">
+                          <div className="p-4">
+                            <pre className="text-sm">
+                              <code className="whitespace-pre-wrap">{markdown}</code>
+                            </pre>
+                          </div>
+                        </ScrollArea>
+                      </TabsContent>
+                    </Tabs>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </section>
 
-        <footer className="mt-20 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8 text-center border border-blue-200 dark:border-gray-700">
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <p className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
-                PDFMarkdown
-              </p>
-              <p className="text-lg font-semibold text-gray-700 dark:text-gray-300">
-                Professional PDF to Markdown Conversion
-              </p>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                Transform your PDF documents into clean, structured Markdown with lightning speed. 
-                Built for professionals who value privacy, security, and efficiency.
-              </p>
-            </div>
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-gray-500 dark:text-gray-400">
-              <span className="flex items-center gap-1">
-                ⚡ Lightning Fast
-              </span>
-              <span className="flex items-center gap-1">
-                🔒 100% Secure
-              </span>
-              <span className="flex items-center gap-1">
-                🌍 Offline Capable
-              </span>
-              <span className="flex items-center gap-1">
-                🆓 Free Forever
-              </span>
-            </div>
+        {/* FAQ Section */}
+        <section className="py-16">
+          <FaqSection />
+        </section>
+      </main>
+      
+      <footer className="border-t py-12">
+        <div className="container px-4">
+          <div className="text-center">
+            <h3 className="text-2xl font-bold">Document to Markdown Converter</h3>
+            <p className="text-muted-foreground mt-2">
+              Professional document conversion tool for developers and content creators
+            </p>
+            <p className="text-sm text-muted-foreground mt-4">
+              &copy; {new Date().getFullYear()} Document Converter. All rights reserved.
+            </p>
           </div>
-        </footer>
-      </div>
-    </main>
+        </div>
+      </footer>
+    </div>
   )
 }
