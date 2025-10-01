@@ -94,13 +94,21 @@ ${text}
     
     // Create JSON structure for Python files
     const lines = text.split('\n')
+    const functions = lines
+      .filter(line => line.trim().startsWith('def '))
+      .map(line => line.trim().substring(4).split('(')[0].trim())
+    
+    const classes = lines
+      .filter(line => line.trim().startsWith('class '))
+      .map(line => line.trim().substring(6).split('(')[0].trim())
+    
     const jsonResult = {
       type: "python",
       filename: file.name,
       content: text,
       lines: lines.length,
-      functions: lines.filter(line => line.trim().startsWith('def ')).map(line => line.trim().substring(4).split('(')[0]),
-      classes: lines.filter(line => line.trim().startsWith('class ')).map(line => line.trim().substring(6).split('(')[0]),
+      functions: functions,
+      classes: classes,
       markdown: markdown
     }
     
@@ -134,11 +142,60 @@ ${text}
     return result
   }
 
-  // Handle DOCX file conversion (basic text extraction)
+  // Handle DOCX file conversion with Mammoth
   const convertDocxFile = async (file: File): Promise<{ markdown: string; json?: any }> => {
     try {
-      // For now, we'll show an informative message about DOCX support
-      // In a real implementation, you'd need a library like mammoth.js
+      // Dynamically import mammoth for DOCX processing
+      const mammoth = await import('mammoth')
+      
+      // Convert DOCX to HTML first, then to Markdown
+      const arrayBuffer = await file.arrayBuffer()
+      const result = await mammoth.default.convertToHtml({ arrayBuffer: arrayBuffer })
+      
+      // Simple HTML to Markdown conversion
+      let markdown = result.value
+        .replace(/<h1>/g, '# ')
+        .replace(/<\/h1>/g, '\n\n')
+        .replace(/<h2>/g, '## ')
+        .replace(/<\/h2>/g, '\n\n')
+        .replace(/<h3>/g, '### ')
+        .replace(/<\/h3>/g, '\n\n')
+        .replace(/<p>/g, '')
+        .replace(/<\/p>/g, '\n\n')
+        .replace(/<strong>/g, '**')
+        .replace(/<\/strong>/g, '**')
+        .replace(/<em>/g, '*')
+        .replace(/<\/em>/g, '*')
+        .replace(/<ul>/g, '\n')
+        .replace(/<\/ul>/g, '\n')
+        .replace(/<ol>/g, '\n')
+        .replace(/<\/ol>/g, '\n')
+        .replace(/<li>/g, '- ')
+        .replace(/<\/li>/g, '\n')
+        .replace(/<br\s*\/?>/g, '\n')
+        .replace(/<[^>]*>/g, '') // Remove any remaining HTML tags
+        
+      // Clean up extra whitespace
+      markdown = markdown
+        .replace(/\n{3,}/g, '\n\n') // Replace 3+ newlines with 2
+        .trim()
+      
+      // Create JSON structure for DOCX files
+      const jsonResult = {
+        type: "docx",
+        filename: file.name,
+        content: result.value, // Original HTML content
+        markdown: markdown,
+        messages: result.messages
+      }
+      
+      return {
+        markdown,
+        json: jsonResult
+      }
+    } catch (error) {
+      console.error("DOCX conversion error:", error)
+      // Fallback to informative message
       const markdown = `# Document Conversion Notice
 
 This appears to be a DOCX file. For best results with DOCX files:
@@ -161,33 +218,34 @@ PDF files preserve formatting, structure, and layout better than other formats, 
 
 Please convert your document to PDF for the best Markdown conversion experience.`
       
-      // Create JSON structure for DOCX files
       const jsonResult = {
         type: "docx",
         filename: file.name,
         message: "DOCX support is limited. Convert to PDF for best results.",
-        markdown: markdown
+        markdown: markdown,
+        error: error instanceof Error ? error.message : "Unknown error"
       }
       
       return {
         markdown,
         json: jsonResult
       }
-    } catch (error) {
-      throw new Error("DOCX conversion failed. Please save your document as PDF for better results.")
     }
   }
 
   // Handle the conversion when triggered
   useEffect(() => {
     const convertDocument = async () => {
-      if (!file || !pdf2md || !isConverting) return
+      if (!file || !isConverting) return
 
       try {
         let result: { markdown: string; json?: any } = { markdown: '' }
         const fileName = file.name.toLowerCase()
         
         if (fileName.endsWith('.pdf')) {
+          if (!pdf2md) {
+            throw new Error("PDF conversion library not loaded")
+          }
           // Convert PDF using pdf2md
           const pdfBuffer = await file.arrayBuffer()
           const markdown = await pdf2md(pdfBuffer)
@@ -214,7 +272,7 @@ Please convert your document to PDF for the best Markdown conversion experience.
           // Convert RTF file
           result = await convertRTFFile(file)
         } else if (fileName.endsWith('.docx') || fileName.endsWith('.doc')) {
-          // Convert DOCX file (limited support)
+          // Convert DOCX file
           result = await convertDocxFile(file)
         } else {
           throw new Error("Unsupported file format")
@@ -230,7 +288,7 @@ Please convert your document to PDF for the best Markdown conversion experience.
       }
     }
 
-    if (isConverting && file && pdf2md) {
+    if (isConverting && file) {
       convertDocument()
     }
   }, [file, pdf2md, isConverting, onConversionComplete, onError])

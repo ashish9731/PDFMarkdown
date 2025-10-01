@@ -15,6 +15,15 @@ export default function Home() {
   const [isConverting, setIsConverting] = useState(false)
   const [fileName, setFileName] = useState<string | null>(null)
 
+  // Function to format JSON for display
+  const formatJson = (json: any): string => {
+    try {
+      return JSON.stringify(json, null, 2)
+    } catch (error) {
+      return typeof json === 'string' ? json : JSON.stringify(json)
+    }
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <main className="container mx-auto px-4 py-8">
@@ -135,7 +144,7 @@ export default function Home() {
                         variant="outline"
                         onClick={() => {
                           if (conversionResult.json) {
-                            navigator.clipboard.writeText(JSON.stringify(conversionResult.json, null, 2))
+                            navigator.clipboard.writeText(formatJson(conversionResult.json))
                           }
                         }}
                       >
@@ -162,7 +171,7 @@ export default function Home() {
                           onClick={() => {
                             if (!conversionResult.json || !fileName) return
                             const element = document.createElement("a")
-                            const file = new Blob([JSON.stringify(conversionResult.json, null, 2)], { type: "application/json" })
+                            const file = new Blob([formatJson(conversionResult.json)], { type: "application/json" })
                             element.href = URL.createObjectURL(file)
                             element.download = fileName.replace(/\.[^/.]+$/, "") + ".json"
                             document.body.appendChild(element)
@@ -200,9 +209,9 @@ export default function Home() {
                         <TabsContent value="json" className="p-0">
                           <ScrollArea className="h-[400px] w-full rounded-md border">
                             <div className="p-4">
-                              <pre className="text-sm">
+                              <pre className="text-sm bg-muted p-4 rounded-md">
                                 <code className="whitespace-pre-wrap">
-                                  {JSON.stringify(conversionResult.json, null, 2)}
+                                  {formatJson(conversionResult.json)}
                                 </code>
                               </pre>
                             </div>
