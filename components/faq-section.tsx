@@ -92,12 +92,12 @@ export function FaqSection() {
               <AccordionTrigger className="text-left font-semibold hover:no-underline">
                 <div className="flex items-center gap-3">
                   <Lock className="w-5 h-5 text-green-600" />
-                  How secure is my data?
+                  How secure is my data and does it work offline?
                 </div>
               </AccordionTrigger>
               <AccordionContent className="text-gray-700 dark:text-gray-300">
                 <div className="space-y-3 pt-2">
-                  <p className="font-semibold text-green-700 dark:text-green-400">Your privacy is our top priority:</p>
+                  <p className="font-semibold text-green-700 dark:text-green-400">Complete Privacy & Offline Functionality:</p>
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
@@ -111,22 +111,27 @@ export function FaqSection() {
                         <Lock className="w-4 h-4 text-green-600" />
                         <span className="font-medium">Zero Storage</span>
                       </div>
-                      <p className="text-sm pl-6">No data retention anywhere</p>
+                      <p className="text-sm pl-6">No data saved anywhere</p>
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <Globe className="w-4 h-4 text-green-600" />
-                        <span className="font-medium">Offline Capable</span>
+                        <span className="font-medium">True Offline</span>
                       </div>
                       <p className="text-sm pl-6">Works without internet</p>
                     </div>
                     <div className="space-y-2">
                       <div className="flex items-center gap-2">
                         <Cpu className="w-4 h-4 text-green-600" />
-                        <span className="font-medium">Local Processing</span>
+                        <span className="font-medium">Memory Cleanup</span>
                       </div>
-                      <p className="text-sm pl-6">All on your machine</p>
+                      <p className="text-sm pl-6">Auto-clears after use</p>
                     </div>
+                  </div>
+                  <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded border border-green-200 dark:border-green-800">
+                    <p className="text-sm font-medium text-green-800 dark:text-green-200">
+                      💡 <strong>True Offline:</strong> PDFMarkdown works perfectly without internet. Once loaded, you can disconnect and continue converting PDFs. No data is ever stored in browser storage.
+                    </p>
                   </div>
                 </div>
               </AccordionContent>

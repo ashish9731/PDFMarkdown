@@ -28,6 +28,26 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
   const [progress, setProgress] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
+  // Clean up any memory when component unmounts
+  useEffect(() => {
+    return () => {
+      // Clear file references to free memory
+      setSelectedFile(null)
+      setError(null)
+      setProgress(0)
+      
+      // Clear any file input
+      if (inputRef.current) {
+        inputRef.current.value = ''
+      }
+      
+      // Force garbage collection hints
+      if (window.gc) {
+        window.gc()
+      }
+    }
+  }, [])
+
   // Reset progress when starting a new conversion
   useEffect(() => {
     if (isConverting) {

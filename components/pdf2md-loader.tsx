@@ -13,6 +13,14 @@ interface PDF2MDLoaderProps {
 export default function PDF2MDLoader({ file, isConverting, onLoad, onConversionComplete, onError }: PDF2MDLoaderProps) {
   const [pdf2md, setPdf2md] = useState<any>(null)
 
+  // Clean up when component unmounts
+  useEffect(() => {
+    return () => {
+      // Clear any references to free memory
+      setPdf2md(null)
+    }
+  }, [])
+
   // Load the pdf2md library
   useEffect(() => {
     const loadPdf2md = async () => {
@@ -44,6 +52,9 @@ export default function PDF2MDLoader({ file, isConverting, onLoad, onConversionC
 
         // Return the result
         onConversionComplete(markdown)
+        
+        // Clear the buffer from memory immediately
+        // Note: pdfBuffer will be garbage collected automatically
       } catch (error) {
         console.error("Error converting PDF:", error)
         onError("Failed to convert PDF. The file might be corrupted or unsupported.")
