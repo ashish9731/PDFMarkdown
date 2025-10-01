@@ -11,7 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function Home() {
-  const [markdown, setMarkdown] = useState<string | null>(null)
+  const [conversionResult, setConversionResult] = useState<{ markdown: string; json?: any } | null>(null)
   const [isConverting, setIsConverting] = useState(false)
   const [fileName, setFileName] = useState<string | null>(null)
 
@@ -26,11 +26,11 @@ export default function Home() {
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent mb-6">
-            Convert Documents to Markdown
+            Convert Documents to Markdown & JSON
           </h1>
           
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
-            Transform your PDFs, Word documents, and text files into clean, structured Markdown with precision and security.
+            Transform your PDFs, Word documents, text files, and Python code into clean Markdown and structured JSON data.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -73,7 +73,7 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Support for PDF, DOCX, DOC, TXT, and RTF files with accurate conversion.
+                  Support for PDF, DOCX, DOC, TXT, RTF, and Python files with accurate conversion.
                 </p>
               </CardContent>
             </Card>
@@ -81,13 +81,13 @@ export default function Home() {
             <Card>
               <CardHeader>
                 <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Zap className="h-6 w-6 text-primary" />
+                  <Code className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle>Lightning Fast</CardTitle>
+                <CardTitle>Markdown & JSON</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Convert documents in seconds with our optimized processing engine.
+                  Get both clean Markdown and structured JSON data from your documents.
                 </p>
               </CardContent>
             </Card>
@@ -100,20 +100,20 @@ export default function Home() {
             <CardHeader>
               <CardTitle className="text-2xl">Document Converter</CardTitle>
               <CardDescription>
-                Upload your document and convert it to clean Markdown format
+                Upload your document and convert it to clean Markdown format and structured JSON data
               </CardDescription>
             </CardHeader>
             <CardContent>
               <FileUploader
                 onConversionComplete={(result, file) => {
-                  setMarkdown(result)
+                  setConversionResult(result)
                   setFileName(file.name)
                 }}
                 isConverting={isConverting}
                 setIsConverting={setIsConverting}
               />
               
-              {markdown && (
+              {conversionResult && (
                 <div className="mt-8 space-y-6">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
@@ -122,20 +122,30 @@ export default function Home() {
                         {fileName?.replace(/\.[^/.]+$/, "")}
                       </p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-wrap">
                       <Button
                         variant="outline"
                         onClick={() => {
-                          navigator.clipboard.writeText(markdown)
+                          navigator.clipboard.writeText(conversionResult.markdown)
                         }}
                       >
-                        Copy
+                        Copy Markdown
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          if (conversionResult.json) {
+                            navigator.clipboard.writeText(JSON.stringify(conversionResult.json, null, 2))
+                          }
+                        }}
+                      >
+                        Copy JSON
                       </Button>
                       <Button
                         onClick={() => {
-                          if (!markdown || !fileName) return
+                          if (!conversionResult.markdown || !fileName) return
                           const element = document.createElement("a")
-                          const file = new Blob([markdown], { type: "text/markdown" })
+                          const file = new Blob([conversionResult.markdown], { type: "text/markdown" })
                           element.href = URL.createObjectURL(file)
                           element.download = fileName.replace(/\.[^/.]+$/, "") + ".md"
                           document.body.appendChild(element)
@@ -144,29 +154,61 @@ export default function Home() {
                         }}
                       >
                         <FileText className="mr-2 h-4 w-4" />
-                        Download
+                        Download Markdown
                       </Button>
+                      {conversionResult.json && (
+                        <Button
+                          variant="secondary"
+                          onClick={() => {
+                            if (!conversionResult.json || !fileName) return
+                            const element = document.createElement("a")
+                            const file = new Blob([JSON.stringify(conversionResult.json, null, 2)], { type: "application/json" })
+                            element.href = URL.createObjectURL(file)
+                            element.download = fileName.replace(/\.[^/.]+$/, "") + ".json"
+                            document.body.appendChild(element)
+                            element.click()
+                            document.body.removeChild(element)
+                          }}
+                        >
+                          <Code className="mr-2 h-4 w-4" />
+                          Download JSON
+                        </Button>
+                      )}
                     </div>
                   </div>
                   
                   <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
                     <Tabs defaultValue="preview">
-                      <TabsList className="grid w-full grid-cols-2">
+                      <TabsList className="grid w-full grid-cols-3">
                         <TabsTrigger value="preview">Preview</TabsTrigger>
                         <TabsTrigger value="markdown">Markdown</TabsTrigger>
+                        {conversionResult.json && <TabsTrigger value="json">JSON Data</TabsTrigger>}
                       </TabsList>
                       <TabsContent value="preview" className="p-4">
-                        <MarkdownPreview markdown={markdown} />
+                        <MarkdownPreview markdown={conversionResult.markdown} />
                       </TabsContent>
                       <TabsContent value="markdown" className="p-0">
                         <ScrollArea className="h-[400px] w-full rounded-md border">
                           <div className="p-4">
                             <pre className="text-sm">
-                              <code className="whitespace-pre-wrap">{markdown}</code>
+                              <code className="whitespace-pre-wrap">{conversionResult.markdown}</code>
                             </pre>
                           </div>
                         </ScrollArea>
                       </TabsContent>
+                      {conversionResult.json && (
+                        <TabsContent value="json" className="p-0">
+                          <ScrollArea className="h-[400px] w-full rounded-md border">
+                            <div className="p-4">
+                              <pre className="text-sm">
+                                <code className="whitespace-pre-wrap">
+                                  {JSON.stringify(conversionResult.json, null, 2)}
+                                </code>
+                              </pre>
+                            </div>
+                          </ScrollArea>
+                        </TabsContent>
+                      )}
                     </Tabs>
                   </div>
                 </div>
@@ -184,7 +226,7 @@ export default function Home() {
       <footer className="border-t py-12">
         <div className="container px-4">
           <div className="text-center">
-            <h3 className="text-2xl font-bold">Document to Markdown Converter</h3>
+            <h3 className="text-2xl font-bold">Document to Markdown & JSON Converter</h3>
             <p className="text-muted-foreground mt-2">
               Professional document conversion tool for developers and content creators
             </p>

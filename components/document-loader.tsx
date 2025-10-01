@@ -6,7 +6,7 @@ interface DocumentLoaderProps {
   file: File | null
   isConverting: boolean
   onLoad: () => void
-  onConversionComplete: (markdown: string) => void
+  onConversionComplete: (result: { markdown: string; json?: any }) => void
   onError: (error: string) => void
 }
 
@@ -31,7 +31,7 @@ export default function DocumentLoader({ file, isConverting, onLoad, onConversio
   }, [onLoad, onError])
 
   // Handle text file conversion
-  const convertTextFile = async (file: File): Promise<string> => {
+  const convertTextFile = async (file: File): Promise<{ markdown: string; json?: any }> => {
     const text = await file.text()
     
     // Convert plain text to markdown with basic formatting
@@ -64,11 +64,54 @@ export default function DocumentLoader({ file, isConverting, onLoad, onConversio
       }
     }
     
-    return markdown.trim()
+    // Create JSON structure for text files
+    const jsonResult = {
+      type: "text",
+      filename: file.name,
+      content: text,
+      lines: lines.length,
+      markdown: markdown.trim()
+    }
+    
+    return {
+      markdown: markdown.trim(),
+      json: jsonResult
+    }
+  }
+
+  // Handle Python file conversion
+  const convertPythonFile = async (file: File): Promise<{ markdown: string; json?: any }> => {
+    const text = await file.text()
+    
+    // Convert Python code to markdown with code blocks
+    const markdown = `# ${file.name}
+
+## Python Code
+
+\`\`\`python
+${text}
+\`\`\``
+    
+    // Create JSON structure for Python files
+    const lines = text.split('\n')
+    const jsonResult = {
+      type: "python",
+      filename: file.name,
+      content: text,
+      lines: lines.length,
+      functions: lines.filter(line => line.trim().startsWith('def ')).map(line => line.trim().substring(4).split('(')[0]),
+      classes: lines.filter(line => line.trim().startsWith('class ')).map(line => line.trim().substring(6).split('(')[0]),
+      markdown: markdown
+    }
+    
+    return {
+      markdown,
+      json: jsonResult
+    }
   }
 
   // Handle RTF file conversion
-  const convertRTFFile = async (file: File): Promise<string> => {
+  const convertRTFFile = async (file: File): Promise<{ markdown: string; json?: any }> => {
     const text = await file.text()
     
     // Basic RTF to text conversion (remove RTF control codes)
@@ -80,15 +123,23 @@ export default function DocumentLoader({ file, isConverting, onLoad, onConversio
       .trim()
     
     // Convert to markdown
-    return convertTextFile(new File([cleanText], file.name, { type: 'text/plain' }))
+    const result = await convertTextFile(new File([cleanText], file.name, { type: 'text/plain' }))
+    
+    // Add RTF specific info to JSON
+    if (result.json) {
+      result.json.type = "rtf"
+      result.json.originalRtf = text
+    }
+    
+    return result
   }
 
   // Handle DOCX file conversion (basic text extraction)
-  const convertDocxFile = async (file: File): Promise<string> => {
+  const convertDocxFile = async (file: File): Promise<{ markdown: string; json?: any }> => {
     try {
       // For now, we'll show an informative message about DOCX support
       // In a real implementation, you'd need a library like mammoth.js
-      return `# Document Conversion Notice
+      const markdown = `# Document Conversion Notice
 
 This appears to be a DOCX file. For best results with DOCX files:
 
@@ -105,9 +156,23 @@ PDF files preserve formatting, structure, and layout better than other formats, 
 - **PDF** ✅ (Recommended - Best results)
 - **TXT** ✅ (Plain text with basic formatting)
 - **RTF** ✅ (Rich text with basic formatting)
+- **Python** ✅ (Code files with syntax highlighting)
 - **DOCX/DOC** ⚠️ (Limited support - PDF recommended instead)
 
 Please convert your document to PDF for the best Markdown conversion experience.`
+      
+      // Create JSON structure for DOCX files
+      const jsonResult = {
+        type: "docx",
+        filename: file.name,
+        message: "DOCX support is limited. Convert to PDF for best results.",
+        markdown: markdown
+      }
+      
+      return {
+        markdown,
+        json: jsonResult
+      }
     } catch (error) {
       throw new Error("DOCX conversion failed. Please save your document as PDF for better results.")
     }
@@ -119,28 +184,44 @@ Please convert your document to PDF for the best Markdown conversion experience.
       if (!file || !pdf2md || !isConverting) return
 
       try {
-        let markdown = ''
+        let result: { markdown: string; json?: any } = { markdown: '' }
         const fileName = file.name.toLowerCase()
         
         if (fileName.endsWith('.pdf')) {
           // Convert PDF using pdf2md
           const pdfBuffer = await file.arrayBuffer()
-          markdown = await pdf2md(pdfBuffer)
+          const markdown = await pdf2md(pdfBuffer)
+          
+          // Create JSON structure for PDF files
+          const jsonResult = {
+            type: "pdf",
+            filename: file.name,
+            pages: "unknown", // pdf2md doesn't provide page count directly
+            markdown: markdown
+          }
+          
+          result = {
+            markdown,
+            json: jsonResult
+          }
         } else if (fileName.endsWith('.txt')) {
           // Convert text file
-          markdown = await convertTextFile(file)
+          result = await convertTextFile(file)
+        } else if (fileName.endsWith('.py')) {
+          // Convert Python file
+          result = await convertPythonFile(file)
         } else if (fileName.endsWith('.rtf')) {
           // Convert RTF file
-          markdown = await convertRTFFile(file)
+          result = await convertRTFFile(file)
         } else if (fileName.endsWith('.docx') || fileName.endsWith('.doc')) {
           // Convert DOCX file (limited support)
-          markdown = await convertDocxFile(file)
+          result = await convertDocxFile(file)
         } else {
           throw new Error("Unsupported file format")
         }
 
         // Return the result
-        onConversionComplete(markdown)
+        onConversionComplete(result)
         
         // Clear the buffer from memory immediately
       } catch (error) {

@@ -15,7 +15,7 @@ import dynamic from "next/dynamic"
 const DocumentLoader = dynamic(() => import("@/components/document-loader"), { ssr: false })
 
 interface FileUploaderProps {
-  onConversionComplete: (markdown: string, file: File) => void
+  onConversionComplete: (result: { markdown: string; json?: any }, file: File) => void
   isConverting: boolean
   setIsConverting: (isConverting: boolean) => void
 }
@@ -71,15 +71,17 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
         'application/msword', // .doc
         'text/plain', // .txt
         'application/rtf', // .rtf
-        'text/rtf' // .rtf alternative
+        'text/rtf', // .rtf alternative
+        'text/x-python' // .py
       ]
       
       if (supportedTypes.includes(file.type) || file.name.toLowerCase().endsWith('.pdf') || 
           file.name.toLowerCase().endsWith('.docx') || file.name.toLowerCase().endsWith('.doc') ||
-          file.name.toLowerCase().endsWith('.txt') || file.name.toLowerCase().endsWith('.rtf')) {
+          file.name.toLowerCase().endsWith('.txt') || file.name.toLowerCase().endsWith('.rtf') ||
+          file.name.toLowerCase().endsWith('.py')) {
         handleFile(file)
       } else {
-        setError("Please upload a supported document format: PDF, DOCX, DOC, TXT, or RTF")
+        setError("Please upload a supported document format: PDF, DOCX, DOC, TXT, RTF, or Python files")
       }
     }
   }
@@ -96,15 +98,17 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
         'application/msword', // .doc
         'text/plain', // .txt
         'application/rtf', // .rtf
-        'text/rtf' // .rtf alternative
+        'text/rtf', // .rtf alternative
+        'text/x-python' // .py
       ]
       
       if (supportedTypes.includes(file.type) || file.name.toLowerCase().endsWith('.pdf') || 
           file.name.toLowerCase().endsWith('.docx') || file.name.toLowerCase().endsWith('.doc') ||
-          file.name.toLowerCase().endsWith('.txt') || file.name.toLowerCase().endsWith('.rtf')) {
+          file.name.toLowerCase().endsWith('.txt') || file.name.toLowerCase().endsWith('.rtf') ||
+          file.name.toLowerCase().endsWith('.py')) {
         handleFile(file)
       } else {
-        setError("Please upload a supported document format: PDF, DOCX, DOC, TXT, or RTF")
+        setError("Please upload a supported document format: PDF, DOCX, DOC, TXT, RTF, or Python files")
       }
     }
   }
@@ -133,10 +137,10 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
         file={selectedFile}
         isConverting={isConverting}
         onLoad={() => setDocumentLoaderLoaded(true)}
-        onConversionComplete={(markdown: string) => {
+        onConversionComplete={(result: { markdown: string; json?: any }) => {
           if (selectedFile) {
             setProgress(100)
-            onConversionComplete(markdown, selectedFile)
+            onConversionComplete(result, selectedFile)
             setIsConverting(false)
           }
         }}
@@ -170,7 +174,7 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
 
           <div>
             <h3 className="text-lg font-medium mb-1">Upload your Document</h3>
-            <p className="text-sm text-muted-foreground mb-2">Supports PDF, DOCX, DOC, TXT, RTF - Drag and drop or click to browse</p>
+            <p className="text-sm text-muted-foreground mb-2">Supports PDF, DOCX, DOC, TXT, RTF, Python - Drag and drop or click to browse</p>
             <p className="text-xs text-muted-foreground mb-4">Maximum file size: 50MB</p>
 
             {selectedFile && (
@@ -200,7 +204,7 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
             </div>
           )}
 
-          <input ref={inputRef} type="file" accept=".pdf,.docx,.doc,.txt,.rtf" className="hidden" onChange={handleChange} />
+          <input ref={inputRef} type="file" accept=".pdf,.docx,.doc,.txt,.rtf,.py" className="hidden" onChange={handleChange} />
         </div>
       </Card>
     </>
