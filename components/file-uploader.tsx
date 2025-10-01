@@ -12,7 +12,7 @@ import { Progress } from "@/components/ui/progress"
 import dynamic from "next/dynamic"
 
 // This component will only be loaded in the browser
-const PDF2MDLoader = dynamic(() => import("@/components/pdf2md-loader"), { ssr: false })
+const DocumentLoader = dynamic(() => import("@/components/document-loader"), { ssr: false })
 
 interface FileUploaderProps {
   onConversionComplete: (markdown: string, file: File) => void
@@ -85,10 +85,21 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
 
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const file = e.dataTransfer.files[0]
-      if (file.type === "application/pdf") {
+      const supportedTypes = [
+        'application/pdf',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+        'application/msword', // .doc
+        'text/plain', // .txt
+        'application/rtf', // .rtf
+        'text/rtf' // .rtf alternative
+      ]
+      
+      if (supportedTypes.includes(file.type) || file.name.toLowerCase().endsWith('.pdf') || 
+          file.name.toLowerCase().endsWith('.docx') || file.name.toLowerCase().endsWith('.doc') ||
+          file.name.toLowerCase().endsWith('.txt') || file.name.toLowerCase().endsWith('.rtf')) {
         handleFile(file)
       } else {
-        setError("Please upload a PDF file")
+        setError("Please upload a supported document format: PDF, DOCX, DOC, TXT, or RTF")
       }
     }
   }
@@ -99,18 +110,29 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
 
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0]
-      if (file.type === "application/pdf") {
+      const supportedTypes = [
+        'application/pdf',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+        'application/msword', // .doc
+        'text/plain', // .txt
+        'application/rtf', // .rtf
+        'text/rtf' // .rtf alternative
+      ]
+      
+      if (supportedTypes.includes(file.type) || file.name.toLowerCase().endsWith('.pdf') || 
+          file.name.toLowerCase().endsWith('.docx') || file.name.toLowerCase().endsWith('.doc') ||
+          file.name.toLowerCase().endsWith('.txt') || file.name.toLowerCase().endsWith('.rtf')) {
         handleFile(file)
       } else {
-        setError("Please upload a PDF file")
+        setError("Please upload a supported document format: PDF, DOCX, DOC, TXT, or RTF")
       }
     }
   }
 
   const handleFile = (file: File) => {
-    if (file.size > 10 * 1024 * 1024) {
-      // 10MB limit
-      setError("File size exceeds 10MB limit")
+    if (file.size > 50 * 1024 * 1024) {
+      // 50MB limit for better support
+      setError("File size exceeds 50MB limit")
       return
     }
 
@@ -135,19 +157,19 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
 
   return (
     <>
-      {/* Hidden PDF2MD loader component that handles the actual conversion */}
-      <PDF2MDLoader
+      {/* Hidden Document loader component that handles the actual conversion */}
+      <DocumentLoader
         file={selectedFile}
         isConverting={isConverting}
         onLoad={() => setPdf2mdLoaded(true)}
-        onConversionComplete={(markdown) => {
+        onConversionComplete={(markdown: string) => {
           if (selectedFile) {
             setProgress(100)
             onConversionComplete(markdown, selectedFile)
             setIsConverting(false)
           }
         }}
-        onError={(errorMsg) => {
+        onError={(errorMsg: string) => {
           setError(errorMsg)
           setIsConverting(false)
         }}
@@ -176,8 +198,9 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
           </div>
 
           <div>
-            <h3 className="text-lg font-medium mb-1">Upload your PDF</h3>
-            <p className="text-sm text-muted-foreground mb-2">Drag and drop your file here or click to browse</p>
+            <h3 className="text-lg font-medium mb-1">Upload your Document</h3>
+            <p className="text-sm text-muted-foreground mb-2">Supports PDF, DOCX, DOC, TXT, RTF - Drag and drop or click to browse</p>
+            <p className="text-xs text-muted-foreground mb-4">Maximum file size: 50MB</p>
 
             {selectedFile && (
               <div className="flex items-center justify-center gap-2 text-sm font-medium text-primary">
@@ -195,7 +218,7 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
           ) : (
             <div className="flex gap-4">
               <Button onClick={() => inputRef.current?.click()} disabled={isConverting}>
-                Select PDF
+                Select Document
               </Button>
 
               {selectedFile && pdf2mdLoaded && (
@@ -206,7 +229,7 @@ export function FileUploader({ onConversionComplete, isConverting, setIsConverti
             </div>
           )}
 
-          <input ref={inputRef} type="file" accept=".pdf" className="hidden" onChange={handleChange} />
+          <input ref={inputRef} type="file" accept=".pdf,.docx,.doc,.txt,.rtf" className="hidden" onChange={handleChange} />
         </div>
       </Card>
     </>

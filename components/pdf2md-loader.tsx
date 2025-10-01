@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 
-interface PDF2MDLoaderProps {
+interface PDFLoaderProps {
   file: File | null
   isConverting: boolean
   onLoad: () => void
@@ -10,7 +10,7 @@ interface PDF2MDLoaderProps {
   onError: (error: string) => void
 }
 
-export default function PDF2MDLoader({ file, isConverting, onLoad, onConversionComplete, onError }: PDF2MDLoaderProps) {
+export default function PDFLoader({ file, isConverting, onLoad, onConversionComplete, onError }: PDFLoaderProps) {
   const [pdf2md, setPdf2md] = useState<any>(null)
 
   // Clean up when component unmounts
