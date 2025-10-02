@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { simpleHtmlToMarkdown } from "@/lib/html-to-markdown"
 
 interface DocumentLoaderProps {
   file: File | null
@@ -152,33 +153,8 @@ ${text}
       const arrayBuffer = await file.arrayBuffer()
       const result = await mammoth.default.convertToHtml({ arrayBuffer: arrayBuffer })
       
-      // Simple HTML to Markdown conversion
-      let markdown = result.value
-        .replace(/<h1>/g, '# ')
-        .replace(/<\/h1>/g, '\n\n')
-        .replace(/<h2>/g, '## ')
-        .replace(/<\/h2>/g, '\n\n')
-        .replace(/<h3>/g, '### ')
-        .replace(/<\/h3>/g, '\n\n')
-        .replace(/<p>/g, '')
-        .replace(/<\/p>/g, '\n\n')
-        .replace(/<strong>/g, '**')
-        .replace(/<\/strong>/g, '**')
-        .replace(/<em>/g, '*')
-        .replace(/<\/em>/g, '*')
-        .replace(/<ul>/g, '\n')
-        .replace(/<\/ul>/g, '\n')
-        .replace(/<ol>/g, '\n')
-        .replace(/<\/ol>/g, '\n')
-        .replace(/<li>/g, '- ')
-        .replace(/<\/li>/g, '\n')
-        .replace(/<br\s*\/?>/g, '\n')
-        .replace(/<[^>]*>/g, '') // Remove any remaining HTML tags
-        
-      // Clean up extra whitespace
-      markdown = markdown
-        .replace(/\n{3,}/g, '\n\n') // Replace 3+ newlines with 2
-        .trim()
+      // Use our improved HTML to Markdown conversion
+      const markdown = simpleHtmlToMarkdown(result.value)
       
       // Create JSON structure for DOCX files with proper formatting
       const jsonResult = {

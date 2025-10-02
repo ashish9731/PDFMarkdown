@@ -27,9 +27,29 @@ export default function Home() {
       };
       return JSON.stringify(json, replacer, 2);
     } catch (error) {
-      return typeof json === 'string' ? json : JSON.stringify(json);
+      return typeof json === 'string' ? json : JSON.stringify(json, null, 2);
     }
   }
+
+  // Function to download content as a file
+  const downloadFile = (content: string, filename: string, mimeType: string) => {
+    try {
+      const blob = new Blob([content], { type: mimeType });
+      const url = URL.createObjectURL(blob);
+      const element = document.createElement("a");
+      element.href = url;
+      element.download = filename;
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download failed:", error);
+      // Fallback: copy to clipboard and show alert
+      navigator.clipboard.writeText(content);
+      alert(`Download failed. Content copied to clipboard instead. Check console for details.`);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -160,13 +180,11 @@ export default function Home() {
                       <Button
                         onClick={() => {
                           if (!conversionResult.markdown || !fileName) return
-                          const element = document.createElement("a")
-                          const file = new Blob([conversionResult.markdown], { type: "text/markdown" })
-                          element.href = URL.createObjectURL(file)
-                          element.download = fileName.replace(/\.[^/.]+$/, "") + ".md"
-                          document.body.appendChild(element)
-                          element.click()
-                          document.body.removeChild(element)
+                          downloadFile(
+                            conversionResult.markdown,
+                            fileName.replace(/\.[^/.]+$/, "") + ".md",
+                            "text/markdown"
+                          );
                         }}
                       >
                         <FileText className="mr-2 h-4 w-4" />
@@ -177,13 +195,11 @@ export default function Home() {
                           variant="secondary"
                           onClick={() => {
                             if (!conversionResult.json || !fileName) return
-                            const element = document.createElement("a")
-                            const file = new Blob([formatJson(conversionResult.json)], { type: "application/json" })
-                            element.href = URL.createObjectURL(file)
-                            element.download = fileName.replace(/\.[^/.]+$/, "") + ".json"
-                            document.body.appendChild(element)
-                            element.click()
-                            document.body.removeChild(element)
+                            downloadFile(
+                              formatJson(conversionResult.json),
+                              fileName.replace(/\.[^/.]+$/, "") + ".json",
+                              "application/json"
+                            );
                           }}
                         >
                           <Code className="mr-2 h-4 w-4" />
