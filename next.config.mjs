@@ -53,7 +53,8 @@ const nextConfig = {
   },
   // Experimental features for better performance
   experimental: {
-    optimizeCss: true,
+    // Remove optimizeCss as it requires critters which is causing build issues
+    // optimizeCss: true,
     optimizePackageImports: ['lucide-react'],
   },
 }
