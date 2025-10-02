@@ -33,6 +33,8 @@ Deployed on Vercel for seamless access.
 - Removed unused dependencies causing conflicts
 - Fixed Vercel deployment configuration
 - Improved dependency management
+- Enhanced JSON structure with full data export
+- Fixed download functionality for complete data
 
 ## License
 
