@@ -28,6 +28,12 @@ A powerful tool to convert PDF documents to clean Markdown format and structured
 
 Deployed on Vercel for seamless access.
 
+## Recent Updates
+
+- Removed unused dependencies causing conflicts
+- Fixed Vercel deployment configuration
+- Improved dependency management
+
 ## License
 
 This project is licensed under the MIT License.
