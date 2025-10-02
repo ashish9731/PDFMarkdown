@@ -16,9 +16,9 @@ export default function Home() {
   const [fileName, setFileName] = useState<string | null>(null)
 
   // Function to format JSON for display with truncation of long strings
-  const formatJson = (json: any): string => {
+  const formatJsonForDisplay = (json: any): string => {
     try {
-      // Custom replacer to truncate long strings
+      // Custom replacer to truncate long strings for display purposes only
       const replacer = (key: string, value: any) => {
         if (typeof value === 'string' && value.length > 1000) {
           return value.substring(0, 1000) + '... (truncated)';
@@ -26,6 +26,15 @@ export default function Home() {
         return value;
       };
       return JSON.stringify(json, replacer, 2);
+    } catch (error) {
+      return typeof json === 'string' ? json : JSON.stringify(json, null, 2);
+    }
+  }
+
+  // Function to format JSON for download (full data without truncation)
+  const formatJsonForDownload = (json: any): string => {
+    try {
+      return JSON.stringify(json, null, 2);
     } catch (error) {
       return typeof json === 'string' ? json : JSON.stringify(json, null, 2);
     }
@@ -171,7 +180,7 @@ export default function Home() {
                         variant="outline"
                         onClick={() => {
                           if (conversionResult.json) {
-                            navigator.clipboard.writeText(formatJson(conversionResult.json))
+                            navigator.clipboard.writeText(formatJsonForDisplay(conversionResult.json))
                           }
                         }}
                       >
@@ -196,7 +205,7 @@ export default function Home() {
                           onClick={() => {
                             if (!conversionResult.json || !fileName) return
                             downloadFile(
-                              formatJson(conversionResult.json),
+                              formatJsonForDownload(conversionResult.json),
                               fileName.replace(/\.[^/.]+$/, "") + ".json",
                               "application/json"
                             );
@@ -234,7 +243,7 @@ export default function Home() {
                             <div className="p-4">
                               <pre className="text-sm bg-muted p-4 rounded-md overflow-auto max-w-full">
                                 <code className="whitespace-pre-wrap break-words">
-                                  {formatJson(conversionResult.json)}
+                                  {formatJsonForDisplay(conversionResult.json)}
                                 </code>
                               </pre>
                               <p className="text-xs text-muted-foreground mt-2">

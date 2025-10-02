@@ -71,7 +71,13 @@ export default function DocumentLoader({ file, isConverting, onLoad, onConversio
       filename: file.name,
       contentLength: text.length,
       lines: lines.length,
-      markdown: markdown.trim()
+      markdown: markdown.trim(),
+      rawText: text,
+      conversionInfo: {
+        convertedAt: new Date().toISOString(),
+        fileSize: file.size,
+        fileType: file.type || "text/plain"
+      }
     }
     
     return {
@@ -110,7 +116,13 @@ ${text}
       lines: lines.length,
       functions: functions,
       classes: classes,
-      markdown: markdown
+      markdown: markdown,
+      rawCode: text,
+      conversionInfo: {
+        convertedAt: new Date().toISOString(),
+        fileSize: file.size,
+        fileType: file.type || "text/x-python"
+      }
     }
     
     return {
@@ -138,6 +150,7 @@ ${text}
     if (result.json) {
       result.json.type = "rtf"
       result.json.originalLength = text.length
+      result.json.rawRTF = text
     }
     
     return result
@@ -162,6 +175,7 @@ ${text}
         filename: file.name,
         contentLength: result.value.length,
         markdown: markdown,
+        rawHTML: result.value,
         messages: result.messages,
         conversionInfo: {
           convertedAt: new Date().toISOString(),
@@ -236,12 +250,17 @@ Please convert your document to PDF for the best Markdown conversion experience.
           const pdfBuffer = await file.arrayBuffer()
           const markdown = await pdf2md(pdfBuffer)
           
+          // Split markdown into sections for better JSON structure
+          const sections = markdown.split('\n\n').filter((section: string) => section.trim() !== '')
+          
           // Create JSON structure for PDF files
           const jsonResult = {
             type: "pdf",
             filename: file.name,
             pages: "unknown", // pdf2md doesn't provide page count directly
             markdown: markdown,
+            sections: sections,
+            contentLength: markdown.length,
             conversionInfo: {
               convertedAt: new Date().toISOString(),
               fileSize: file.size,
