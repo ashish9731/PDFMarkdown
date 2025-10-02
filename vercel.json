@@ -6,7 +6,7 @@
   "outputDirectory": ".next",
   "functions": {
     "app/**/*.{js,ts,tsx}": {
-      "runtime": "nodejs18.x",
+      "runtime": "@vercel/node@3.0.13",
       "maxDuration": 30
     }
   },
